@@ -16,11 +16,11 @@ Then open [http://localhost:8000](http://localhost:8000) in your browser.
 If you fall behind during the workshop, you can catch up by checking out a checkpoint branch:
 
 ```bash
-git checkout checkpoint/01   # After Session 1 (Ideation)
-git checkout checkpoint/02   # After Session 2 (First Feature)
-git checkout checkpoint/03   # After Session 3 (Add Recipe + Failure Exercise)
-git checkout checkpoint/04   # After Session 4 (Structure and Patterns)
-git checkout checkpoint/05   # After Session 5 (Copilot Instructions)
+git checkout checkpoint/01   # After Session 2 (Recipe List)
+git checkout checkpoint/02   # After Session 3 (Add Recipe)
+git checkout checkpoint/03   # After Session 4 (Refactored Structure)
+git checkout checkpoint/04   # After Session 5 (Copilot Instructions)
+git checkout checkpoint/05   # After Session 6 (Example Finished App)
 ```
 
 To return to your own work:

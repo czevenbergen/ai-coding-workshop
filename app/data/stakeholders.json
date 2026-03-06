@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Eva de Vries",
+    "organization": "Ministry of Economic Affairs",
+    "role": "Policy Advisor",
+    "category": "Government"
+  },
+  {
+    "name": "Thomas van den Berg",
+    "organization": "NOS Nieuws",
+    "role": "Political Reporter",
+    "category": "Media"
+  },
+  {
+    "name": "Sophie Bakker",
+    "organization": "Greenpeace Netherlands",
+    "role": "Campaign Director",
+    "category": "NGO"
+  },
+  {
+    "name": "Jan Willem Koster",
+    "organization": "Van Doorne Advocaten",
+    "role": "Managing Partner",
+    "category": "Client"
+  },
+  {
+    "name": "Maria Santos",
+    "organization": "European Commission",
+    "role": "Trade Policy Officer",
+    "category": "Government"
+  }
+]

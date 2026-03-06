@@ -1,111 +1,105 @@
-# Workshop Step-by-Step Guide
-
 # Building with AI: A Hands-On Workshop
 
-Welcome! Today you'll build a personal recipe book web application using AI as your coding partner. This guide walks you through each session. Follow along at your own pace — support staff are here to help if you get stuck.
+Welcome! Today you'll build a stakeholder directory — a web application to track contacts, organizations, and categories — using AI as your coding partner.
 
-**Checkpoint branches** are available throughout the day. If you fall behind or want a fresh start at any session, you can run:
-
-```
-git checkout checkpoint/01   # After Session 1
-git checkout checkpoint/02   # After Session 2
-git checkout checkpoint/03   # After Session 3
-git checkout checkpoint/04   # After Session 4
-git checkout checkpoint/05   # After Session 5
-```
+This guide walks you through each session. Follow along at your own pace — support staff are here to help if you get stuck.
 
 ---
 
-## Session 1: Ideation (9:30–10:15)
+## Your First Prompt (during the Opening)
 
-### What you'll learn
-- How to use AI as a brainstorming and design partner
-- How the way you ask shapes what you get back
+Let's see what Copilot can do. You're going to ask it to change the welcome page you saw during setup — and watch it edit your code in real time.
 
-### What to do
+**Step 1: Open Copilot Chat**
 
-**1. Open Copilot Chat**
+Press `Cmd+Shift+I` (Mac) or `Ctrl+Shift+I` (Windows) to open the Chat panel. Make sure **Agent** is selected at the top.
 
-In VS Code, open the Copilot Chat panel (click the chat icon in the left sidebar, or press `Ctrl+Shift+I` / `Cmd+Shift+I`).
+**Step 2: Send your first message**
 
-**2. Design your recipe app — with AI**
+Type this into the chat:
 
-You're going to have a conversation with Copilot about what your recipe app should do. You're not writing code yet — just thinking and planning together.
+> "Change the welcome page so it says 'Welcome, [your name]!' and add a short description of what this app will do."
 
-Start by telling Copilot what you want to build. Here are some ideas to get you going, but use your own words:
+Watch what happens. Copilot reads your files, figures out what to change, and edits the code directly. You'll see the changes highlighted in your editor.
 
-- "I want to build a personal recipe book web app. What features would make it useful?"
-- "If I only have a few hours, which features should I build first?"
-- "What information should a recipe have? Can you suggest a simple data model?"
+**Step 3: Review the change**
 
-Spend about 15 minutes exploring. Ask follow-up questions. Push back if the AI suggests something too complex. This is a conversation.
+Look at the highlighted code in your editor. You'll see what was there before and what Copilot changed. This is called a **diff** — it shows you exactly what's different.
 
-**3. Make your plan**
+- Click **Keep** to accept the change
+- Click **Undo** to reject it
 
-Based on your conversation, write down (on paper, or in a new file in VS Code) the features you want to build today. Keep it realistic — 3 to 4 features is plenty. For example:
+**Read it first. Always.** Don't click Keep until you understand what changed.
 
-- View a list of all recipes
-- Add a new recipe
-- View a single recipe's details
-- Search or filter recipes
+**Step 4: See it in the browser**
 
-**4. Group discussion**
+Your app should reload automatically. Check your browser — do you see your name?
 
-We'll compare notes as a group. Did the AI suggest the same things to everyone? What was different?
+**Step 5: Undo everything with a checkpoint**
 
-### Lesson learned
+Every message you send creates a **checkpoint** — a snapshot of your files at that moment. Let's use one now.
 
-> The AI is a useful thinking partner, but different inputs produce different outputs. You shape the conversation.
+In the Chat panel, hover over the message you just sent. You'll see a **Restore Checkpoint** button. Click it.
+
+The change disappears. Your welcome page is back to the original. That's your safety net — if anything goes wrong today, you can always restore a checkpoint.
+
+**What you just learned:**
+- **Agent mode edits your files directly.** You type what you want; it makes the changes.
+- **Review before you accept.** Always read the diff before clicking Keep.
+- **Checkpoints are your safety net.** Every message creates one. Use Restore Checkpoint to undo.
+- **New conversation = fresh start.** When you want to try a different approach, start a new conversation. The AI won't carry over mistakes from the old one.
 
 ---
 
-## Session 2: First Feature (10:15–11:15)
+## Session 1: First Feature (9:45–10:45)
 
 ### What you'll learn
-- The plan → execute → iterate cycle
-- Working in small increments, not big leaps
-- Reading AI output is as important as writing prompts
+- Building with AI one step at a time
+- Why reading AI output is as important as writing prompts
+
+### How a web app works (the 30-second version)
+
+The app you're building has three parts:
+
+- **Data** — the stakeholders you want to display, stored in a file (`app/data/stakeholders.json`)
+- **Routes** — Python code that decides what happens when someone visits a URL (like the homepage)
+- **Templates** — HTML files that define what each page looks like
+
+Your first task: connect these three pieces so that when you open the app, you see a list of stakeholders. The data already exists — you just need to build the route and the page.
 
 ### What to do
 
-We're going to build the recipe list page — a page that shows all your recipes. We'll do this step by step, not all at once.
+We're going to build the first page of your stakeholder directory — a page that lists all your contacts. We'll do this step by step, not all at once. Each step builds one piece: first you'll look at the data, then build the route, then the page.
 
-**Step 1: Plan**
+**Step 1: Look at your data**
 
-Before you write any code, be clear about what you need:
-- A Python route in `app/main.py` that handles requests to the homepage
-- Some recipe data to display (we'll start with hardcoded data — just a Python list)
-- An HTML template that shows the recipes
+Open `app/data/stakeholders.json` in VS Code. This is the sample data your app will display. Take a moment to read through it — each stakeholder has a name, organization, role, and category.
 
-**Step 2: Create recipe data**
+This file is your app's data store. Later, when you build a form to add stakeholders, new entries will be saved here too.
 
-Open `app/main.py` in VS Code. Ask Copilot to help you create some sample recipe data. Be specific:
+**Step 2: Create the list route**
 
-- Tell it you want a Python list of dictionaries
-- Each recipe should have a title, a short description, and a category
-- Ask for 4-5 sample recipes
+Right now, opening the app shows the welcome page. You want it to show your stakeholders instead. Ask Copilot to make that happen — you can copy this directly or adapt it:
 
-Review what Copilot gives you. Does it make sense? Would you change anything? Edit it if you want.
+> "Create a route for the homepage that reads the stakeholders from `app/data/stakeholders.json` and displays them on a page called `stakeholders.html`. Replace the existing welcome page route."
 
-**Step 3: Create the list route**
+A **route** is a rule that tells the app: "When someone visits this URL, show them this page." Your app already has one route (for the welcome page) — you're replacing it with a new one.
 
-Now ask Copilot to create a FastAPI route that passes these recipes to a template. Some things to mention in your prompt:
-- You're using Jinja2 templates
-- The route should be for the homepage (`/`)
-- It should pass the recipes to a template called `recipes.html`
+Copilot will update `app/main.py` with the new route. Review the highlighted changes, then click **Keep**.
 
-You already have a working route for `/` in `main.py` from the boilerplate. You'll need to modify or replace it.
+**Step 3: Create the template**
 
-**Step 4: Create the template**
+Now ask Copilot to create the HTML page that displays your stakeholders. Be specific about what you want to see on the page:
 
-Ask Copilot to create the HTML template file. Be specific about:
-- Where the file should go (`app/templates/recipes.html`)
-- That it should extend the base template
-- That it should display each recipe's title, description, and category
+> "Create a template at `app/templates/stakeholders.html` that shows a heading 'Stakeholder Directory' and displays each stakeholder's name, organization, role, and category. Use a table or cards."
 
-**Step 5: Run and iterate**
+A **template** is an HTML file that defines what a page looks like. Copilot will create the file and automatically use the same styling as your welcome page.
 
-Start your app if it's not already running:
+You'll see the new file appear in your file explorer. Open it, read through the HTML, and click **Keep**.
+
+**Step 4: Run and see**
+
+If your app is already running, it should reload automatically. If not, start it:
 
 ```
 uv run fastapi dev app/main.py
@@ -113,164 +107,123 @@ uv run fastapi dev app/main.py
 
 Open [http://localhost:8000](http://localhost:8000) in your browser. What do you see?
 
-- If it works: great! Look at the code. Does it make sense?
-- If there's an error: read the error message. Copy it into Copilot Chat and ask for help. This is normal — iteration is the process.
+- **If it works:** Great! Look at the page. Does the data look right?
+- **If there's an error:** Read the error message in the terminal. Copy it into Copilot Chat and ask: "I'm getting this error when I run my FastAPI app. Can you help me fix it?" Include the full error message.
 
-**Step 6: Read the code**
+Common issues:
+- "Template not found" → check the file is in `app/templates/` and the filename matches
+- Import errors → Copilot may have added something that needs a different approach. Ask it to fix the error.
 
-Your recipe list works. Now spend 5 minutes *reading* the code Copilot generated.
+**Step 5: Read the code**
+
+Your stakeholder list works. Now spend a few minutes *reading* the code Copilot generated.
 
 - Open `app/main.py` and read the route function
 - Open the template and read the HTML
-- Pick one thing you don't fully understand and ask Copilot: "Can you explain what this part does?" (Select the code, then ask in chat.)
+- Pick one thing you don't fully understand and ask Copilot: "Can you explain what this part does?" (Select the code first, then ask in chat.)
+
+Understanding what the AI wrote is just as important as getting it to write it.
 
 ### Lesson learned
 
-> Work in small steps, not big leaps. The real skill is evaluating what the AI gives you, not just writing prompts.
+> One step at a time. Build one piece, review it, then build the next. The AI writes the code; you steer and verify.
 
 ---
 
-*Take a break! (11:15–11:30)*
+*Take a break! (10:45–11:00)*
 
 ---
 
-## Session 3: Adding Features + Dealing with Problems (11:30–12:45)
+## Session 2: Adding Features + Dealing with Failure (11:00–12:15)
 
 ### What you'll learn
-- How prompting specificity affects results
-- Common AI failure modes: hallucination, over-engineering, drift
-- What the "context window" is and why it matters
+- What happens when prompts are vague vs. specific
+- How to recover when AI goes wrong
 
-### Part A: Build the "Add Recipe" form (40 min)
+### Part A: Build the "Add Stakeholder" form (40 min)
 
-Now you'll build something more complex: a form where you can add new recipes.
+Now you'll build something more complex: a form where you can add new stakeholders to your directory.
 
 This requires multiple pieces:
-1. A new route that shows the form (`GET /add`)
+1. A new route that shows the form
 2. The HTML form template
-3. A route that receives the form submission (`POST /add`)
-4. Adding the new recipe to your list
+3. A route that receives the form submission and saves the new stakeholder to the data file
 
-**Work incrementally.** Don't ask Copilot to build all four pieces at once. Build one at a time:
+**Work incrementally.** Don't ask Copilot to build all three pieces at once. Build one at a time:
 
-1. First, ask for the route and template to *display* the form
-2. Run it. Make sure the form appears.
-3. Then, ask for the route to *handle* the form submission
-4. Run it. Add a recipe. Does it appear in your list?
+1. **First:** Ask Copilot to create a page where you can fill in a form to add a new stakeholder. Here's one way to start:
 
-If something's not working, describe the specific problem to Copilot. "The form submits but the recipe doesn't appear" is much better than "it's not working."
+   > "Create a page at /add with a form to add a new stakeholder. The form should have fields for name, organization, role, and category."
 
-### Part B: The intentional failure exercise (35 min)
+2. **Run it.** Make sure the form appears in your browser at the URL you chose.
+3. **Then:** Ask Copilot to make the form actually work — it should save the new stakeholder to the data file and send you back to the main page. This time, write the prompt yourself.
+4. **Run it.** Add a stakeholder through the form. Does it appear in your list?
 
-Now we're going to see what happens when things go wrong.
+If something's not working, describe the **specific** problem to Copilot:
+- "The form submits but the stakeholder doesn't appear in the list" ✓
+- "It's not working" ✗
 
-**Step 1: Give a bad prompt**
+The more context you give Copilot about what's happening vs. what you expected, the better it can help.
 
-Open a new Copilot Chat conversation and type exactly this:
+### Part B: The failure experiment (35 min)
 
-> "Make the app better and more professional."
+Now we're going to see the difference between a vague prompt and a specific one — and practice using checkpoints to recover.
 
-Submit it. Let Copilot do its thing.
+**Step 1: Try the vague prompt**
 
-**Step 2: Observe**
+Make sure your app is working after Part A. This is your "known good state."
 
-Look at what the AI suggests. You'll likely see some combination of:
-- Code restructuring you didn't ask for
+Open a **new** Copilot Chat conversation and type this:
+
+> "Make my stakeholder app better and more professional. Add all the features it needs."
+
+Submit it and **watch what happens.** Copilot will start editing your files — possibly many of them. You'll likely see:
+- Files you didn't ask it to change
 - New features you didn't want
-- Libraries or frameworks you've never heard of
-- Changes that don't match your current code
+- Code restructuring you didn't request
+- Maybe the app doesn't even start anymore
 
-**Step 3: Try to recover**
+Look at the mess. How many files changed? Can you follow what it did? **Don't click Keep.**
 
-Stay in the same conversation. Try to steer the AI back to something useful. Spend about 3 minutes on this.
+**Step 2: Restore your checkpoint**
 
-**Step 4: Start fresh**
+In the Chat panel, hover over the message you just sent (the vague prompt). You'll see a **Restore Checkpoint** button. Click it and confirm.
 
-Now undo any changes (use `Ctrl+Z` / `Cmd+Z` or `git checkout .`). Open a **new** chat conversation and ask for one specific improvement, like:
+All the changes disappear. Your app is back to exactly how it was before the vague prompt. That's what checkpoints are for.
 
-> "Add a navigation bar to the base template with links to the recipe list and the add recipe page."
+**Step 3: Try the specific prompt**
 
-Compare: how much faster and better was the specific prompt?
+Open another **new** conversation and type this:
 
-**Step 5: Group discussion**
+> "Add a navigation bar to base.html with links to the stakeholder list and the add stakeholder page. Use the existing Pico CSS classes."
 
-We'll talk about what happened and name the patterns.
+Watch it run. One file changes. The diff is small and clear. Check your browser — does the nav bar look right? If so, click **Keep**.
 
-### Lesson learned
+**Step 4: Discuss**
 
-> AI fails in predictable ways. Learning to recognize hallucination, over-engineering, and context drift is more valuable than avoiding them. When a conversation goes off track, a fresh start is often faster than a fix.
+You just experienced three common AI failure patterns:
 
----
+- **Hallucination** — when the AI invents things that don't exist (APIs, libraries, features)
+- **Over-engineering** — when it adds complexity you didn't ask for
+- **Drift** — when it gradually moves away from what you actually wanted
 
-*Lunch break! (12:45–13:30)*
-
----
-
-## Session 4: Structure and Patterns (13:30–14:30)
-
-### What you'll learn
-- How breaking code into smaller pieces makes everything easier
-- How AI follows and amplifies existing patterns in your code
-
-### What to do
-
-**Step 1: Assess the mess**
-
-Look at your `app/main.py`. By now it probably has:
-- Sample recipe data
-- Multiple route functions
-- Maybe some helper logic
-
-All in one file. That's fine for getting started, but it makes things harder as the app grows.
-
-**Step 2: Plan the restructure**
-
-Ask Copilot to help you think about how to organize the code. A good structure might be:
-
-```
-app/
-  main.py          — FastAPI app setup and configuration
-  routes.py        — All route functions
-  data.py          — Recipe data and data operations
-  templates/
-    base.html      — Base template with layout
-    recipes.html   — Recipe list page
-    add.html       — Add recipe form
-```
-
-**Step 3: Refactor**
-
-Ask Copilot to help you move code into the new structure, one file at a time.
-
-- Start with `data.py` — move the recipe list and any functions that modify it
-- Then `routes.py` — move the route functions, import data from `data.py`
-- Update `main.py` to import routes
-
-**After each move, run the app and verify it still works.** Don't move everything at once — move one piece, test, move the next.
-
-**Step 4: Add a new feature within the structure**
-
-Now add something new — for example, a recipe detail page (clicking a recipe shows its full details). Notice how the AI follows the patterns you've established:
-
-- It puts the new route in `routes.py`
-- It creates a new template in the templates folder
-- It follows the same coding style
-
-**Step 5: Reflect**
-
-Compare this experience to Session 2. Was it easier to add the new feature now that the code is organized? Did the AI's suggestions fit better into the codebase?
+These aren't bugs. They're predictable patterns you can learn to spot. And the checkpoint saved you from the worst of it.
 
 ### Lesson learned
 
-> Investing in structure pays off immediately. The AI amplifies whatever patterns exist in your codebase — good or bad.
+> AI fails in predictable ways. Specific prompts with clear context produce better results. Always review before accepting — and when things go wrong, use a checkpoint to revert and start fresh.
 
 ---
 
-## Session 5: Leveling Up (14:30–15:15)
+*Lunch break! (12:15–13:15)*
+
+---
+
+## Session 3: Context and Configuration (13:15–14:15)
 
 ### What you'll learn
 - How to give AI persistent context about your project
-- How small configuration investments yield large returns
+- How the right context makes the AI dramatically more useful
 
 ### What to do
 
@@ -278,52 +231,41 @@ Compare this experience to Session 2. Was it easier to add the new feature now t
 
 Until now, you've been telling Copilot what your project is every time you start a conversation. What if it just *knew*?
 
-Create a new file at `.github/copilot-instructions.md` in your project:
+Ask Copilot to create an instructions file for your project:
 
-1. Create the `.github` folder if it doesn't exist
-2. Create `copilot-instructions.md` inside it
+> "Create a file at `.github/copilot-instructions.md` that describes this project — what it does, what technologies it uses, and how data is stored. Keep it short and practical."
 
-Ask Copilot to help you write it, or write it yourself. Include things like:
+Review the file Copilot creates. It should include things like:
 
 ```markdown
-# Project: Personal Recipe Book
-
 This is a Python web application built with FastAPI and Jinja2 templates.
+It's a stakeholder directory for tracking contacts, organizations, and categories.
 
 - Use Pico CSS for styling (already included in base.html)
 - Keep code simple and readable
-- Use the existing project structure: routes in routes.py, data in data.py, templates in app/templates/
-- Data is stored in memory (Python lists) — no database
-- Use type hints for function parameters
+- Data is stored in `app/data/stakeholders.json` — no database
 ```
 
-**Step 2: Test the difference**
+Edit it if you want — add rules, remove things that don't seem right, make it yours. Then click **Keep**.
 
-Now ask Copilot to add a new small feature — for example:
-- A "delete recipe" button
-- Better styling for the recipe cards
-- A recipe count on the homepage
+Copilot reads this file automatically in every conversation. It's persistent context — you won't have to explain your project again.
 
-Notice: does Copilot now follow your project conventions without you having to explain them?
+**Step 2: Build a new feature**
 
-**Step 3 (optional stretch): Create a reusable prompt**
+With your instructions file in place, add a new feature to your app. Choose one that interests you:
 
-If you have time, create a prompt file at `.github/prompts/add-page.prompt.md`:
+- **Stakeholder detail page** — click a stakeholder's name to see their full information
+- **Search** — add a search bar to filter stakeholders by name or organization
+- **Delete** — add a button to remove a stakeholder from the list
+- **Categories** — group stakeholders by their category on the main page
 
-```markdown
----
-description: "Add a new page to the recipe app"
----
+Plan before you prompt. Work incrementally. Read the output.
 
-Create a new page for the recipe app. I need:
-1. A new route function in app/routes.py
-2. A new Jinja2 template in app/templates/
-3. A link to the new page in the navigation bar
+Notice: does Copilot now follow your project conventions without you having to explain them? Does it put files in the right places? Use the right styling?
 
-The page should: {{ input }}
-```
+**Step 3: Compare**
 
-Try using it via the Copilot Chat prompt menu.
+Think back to Session 1. You had to explain everything. Now the AI knows your project. Less explaining, better results — that's the compound effect of context.
 
 ### Lesson learned
 
@@ -331,11 +273,11 @@ Try using it via the Copilot Chat prompt menu.
 
 ---
 
-*Take a break! (15:15–15:30)*
+*Take a break! (14:15–14:30)*
 
 ---
 
-## Session 6: Free Build (15:30–16:30)
+## Session 4: Free Build (14:30–16:15)
 
 ### What you'll learn
 - How to apply everything independently
@@ -343,32 +285,31 @@ Try using it via the Copilot Chat prompt menu.
 
 ### What to do
 
-This is your time. Build whatever you want to add to your recipe app. Here are some ideas if you need inspiration:
+This is your time. Build whatever you want to add to your stakeholder directory. You can work solo or pair up with someone — your choice.
 
-**Easier:**
-- Improve the styling — nicer cards, better layout, colors
-- Add a recipe count ("Showing 5 recipes")
-- Add a confirmation before deleting a recipe
+Here are some ideas if you need inspiration:
+
+**Simpler:**
+- Improve the styling — nicer layout, better cards, category badges
+- Add a stakeholder count ("Showing 12 stakeholders")
+- Sort stakeholders alphabetically
 
 **Medium:**
-- Search recipes by name or ingredient
-- Filter recipes by category
-- Sort recipes alphabetically or by date added
+- Search or filter by name, organization, or category
+- Edit existing stakeholders
+- Add notes to a stakeholder's profile
 
-**Harder:**
-- Save recipes to a JSON file so they survive when you restart the server
-- Add recipe images (by URL)
-- Edit existing recipes
-- Mark recipes as favorites
+**More ambitious:**
+- Interaction history — log when you last contacted someone
+- Export the stakeholder list as a viewable text page
+- Tags or labels that can be added and filtered
+- A dashboard with category counts
 
 **Remember what you've learned:**
-1. Plan before you prompt — know what you want before you ask
-2. Work in small steps — one feature at a time
-3. Read and evaluate — don't just accept, understand
-4. Be specific — vague prompts give vague results
-5. Recognize failure modes — if the AI is hallucinating or over-engineering, step back
-6. Use structure — put new code where it belongs
-7. Use context — your copilot instructions file helps
+1. **AI as Collaborator** — use it for thinking and building, but you make the decisions
+2. **Work in Small Steps** — one piece at a time. Build, review, then build the next.
+3. **Context Shapes Output** — be specific, and let your copilot instructions file do the heavy lifting
+4. **Verify, Don't Trust** — read everything, spot hallucination and over-engineering, start fresh when needed
 
 Support staff are here if you get stuck, but try to work through problems yourself first. That's where the real learning happens.
 
@@ -378,15 +319,15 @@ Support staff are here if you get stuck, but try to work through problems yourse
 
 ---
 
-## Closing (16:30–17:00)
+## Closing (16:15–16:45)
 
 We'll wrap up together:
-- Show-and-tell: volunteers demo what they built (2 minutes each)
-- Group reflection: what surprised you? What was harder or easier than expected?
-- Principles review: we'll revisit the 9 principles with examples from today
-- You'll receive a principles reference card to take home
+- **Show-and-tell:** volunteers demo what they built (2 minutes each)
+- **Group reflection:** what surprised you? What was harder or easier than expected?
+- **Principles review:** we'll revisit the 4 principles with examples from today
+- You'll receive a **principles reference card** to take home
 
-**Thank you for participating!**
+Thank you for participating!
 
 ---
 
@@ -399,13 +340,11 @@ We'll wrap up together:
 | `uv run fastapi dev app/main.py` | Start the app in development mode |
 | `Ctrl+C` / `Cmd+C` (in terminal) | Stop the app |
 | `Ctrl+Z` / `Cmd+Z` | Undo changes in a file |
-| `git checkout .` | Undo ALL file changes (reset to last commit) |
-| `git checkout checkpoint/XX` | Switch to a checkpoint branch |
 
 ### Copilot shortcuts
 
 | Shortcut | What it does |
 |---|---|
-| `Ctrl+Shift+I` / `Cmd+Shift+I` | Open Copilot Chat |
+| `Cmd+Shift+I` (Mac) / `Ctrl+Shift+I` (Win) | Open Copilot Chat |
 | Select code → right-click → Copilot | Ask about selected code |
 | `#file` in chat | Reference a specific file |

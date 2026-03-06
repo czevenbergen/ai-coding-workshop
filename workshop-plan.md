@@ -1,211 +1,220 @@
 # Workshop: Building with AI
 
-**Duration:** Full day (9:00–17:00)
-**Audience:** Non-technical to slightly technical
+**Duration:** Full day (9:00–16:45)
+**Audience:** Non-technical to slightly technical (employees at a legal/public affairs consultancy)
 **Group size:** 10 participants, 3 support staff
 **Stack:** Python 3.12, FastAPI, Jinja2 templates, Pico CSS, uv
-**Tools:** VS Code + GitHub Copilot (out-of-the-box, no custom config until Session 5)
-**Application:** Personal Recipe Book
+**Tools:** VS Code + GitHub Copilot
+**Application:** Stakeholder Directory
 
 ## Principles Taught
 
 | # | Principle | Core Idea |
 |---|---|---|
 | 1 | AI as Collaborator | AI is a thinking partner from ideation through execution. You stay in the driver's seat — reviewing, deciding, testing. |
-| 2 | Plan → Execute → Iterate | Break work into small steps. One instruction at a time. Review before moving on. |
-| 3 | Context is Everything | The AI only knows what's in its context window. It doesn't know your full codebase or your intent unless you provide it. |
-| 4 | Prompting as a Skill | Specific, constrained prompts with clear intent produce dramatically better results than vague requests. |
-| 5 | Common Failure Modes | Hallucination, drift, over-engineering, stale context — recognizing these patterns lets you intervene early. |
-| 6 | Decomposition | Large features should be broken into small, independently completable pieces. |
-| 7 | Existing Code & Patterns | AI works best when it can follow existing patterns. Consistency in your codebase compounds into better AI output. |
-| 8 | Incremental over Ambitious | Ask for small changes, not complete rewrites. The urge to ask for everything at once leads to worse results. |
-| 9 | Reading > Writing | You'll spend more time reading and evaluating AI output than writing prompts. That's normal — it's the job. |
+| 2 | Work in Small Steps | One instruction at a time. Plan what you need, execute it, review the result, move on. Resist the urge to ask for everything at once. |
+| 3 | Context Shapes Output | The AI only knows what you tell it and what it can see. Specific prompts beat vague ones. Good project structure and persistent instructions multiply the effect. |
+| 4 | Verify, Don't Trust | Read everything the AI gives you. It fails in predictable ways — hallucination, over-engineering, drift. Your job is to catch these, not avoid them. |
 
-## Materials to Create
+## Distribution
+
+Participants receive a zip file by email before the workshop containing:
+- The boilerplate app (ready to run with `uv sync && uv run fastapi dev app/main.py`)
+- The step-by-step guide
+- The preparation guide
+
+If a participant arrives without the zip, support staff have USB drives with the folder ready to copy.
+
+## Materials
 
 | Material | Purpose |
 |---|---|
-| Preparation guide | Pre-workshop: install Python 3.12, VS Code, Copilot extension, uv |
-| Boilerplate repo | Hello-world FastAPI app + one template + Pico CSS. Single `uv sync && uv run fastapi dev` to start. |
-| Step-by-step guide | Primary teaching document — one section per session, with exercises and lesson-learned prompts |
-| Checkpoint branches | `checkpoint/01` through `checkpoint/05` — catch-up points between sessions |
-| Principles reference card | One-pager takeaway summarizing all 9 principles |
+| Preparation guide | Pre-workshop: install Python 3.12, VS Code, Copilot extension, uv. Sent by email with the zip. |
+| Boilerplate app | Hello-world FastAPI app + one template + Pico CSS. Single `uv sync && uv run fastapi dev` to start. |
+| Step-by-step guide | Primary participant document — one section per session, with exercises and prompts to try |
+| Principles reference card | One-pager takeaway summarizing the 4 core principles. Handed out at the end. |
+| Backup folders | Pre-built app states after Sessions 1 and 2. Support staff hand these out if someone's app is broken beyond repair. |
 
 ---
 
 ## The Day
 
-### Opening — 30 min (9:00–9:30)
+### Opening — 45 min (9:00–9:45)
 
-**Goal:** Set expectations, verify setup, build excitement.
+**Goal:** Set expectations, verify setup, orient participants to Copilot.
 
 **What happens:**
-- Brief intro: what AI-assisted coding is (and isn't)
-- Live demo: instructor builds something small in 2 minutes with Copilot to show the workflow in action
-- Setup verification: everyone clones the repo, runs `uv sync && uv run fastapi dev`, sees the hello-world page in their browser
+
+**Intro (10 min):**
+- Welcome, agenda overview, what we're building today (a stakeholder directory — a tool to track contacts, organizations, and categories)
 - Framing: "You will build a working web application today. You don't need to understand every line of code. But you will understand what it does and how to change it."
+- Introduce the 4 principles briefly — just names and one-liners. "We'll come back to these throughout the day."
 
-**Lesson learned:** None yet — this is logistics and motivation.
+**Setup verification (15 min):**
+- Everyone opens their project folder in VS Code
+- Run `uv sync && uv run fastapi dev app/main.py`
+- See the welcome page in the browser
+- Support staff help anyone who didn't complete the preparation guide. This is why we budgeted 15 minutes — expect 2-3 people to need help.
+
+**Copilot orientation — first prompt (20 min):**
+- Experiential walkthrough. Everyone follows along by sending their first prompt:
+  - Open Copilot Chat panel (`Ctrl+Cmd+I`)
+  - Confirm that **Agent** is selected in the agent picker at the top of the Chat view. Explain briefly: "Agent mode means Copilot will edit your files directly when you ask it to build something. You'll see changes appear in the editor in real time."
+  - **First prompt:** Everyone types: "Change the welcome page so it says 'Welcome, [your name]!' and add a short description of what this app will do." Submit it and watch Copilot edit the file in real time. This is the "wow" moment — let it land.
+  - **Teach Keep/Undo through the change they just made:** Walk through the inline diff. Show the editor overlay controls (Up/Down to navigate edits). Point out the Keep and Undo buttons. Key message: **"Always read the changes before you click Keep. Once you Keep, it's final."** Have everyone click Keep.
+  - **Teach checkpoints through undoing that change:** In the Chat view, have everyone hover over the message they just sent and point out the Restore Checkpoint option. Click it — watch the personalized welcome disappear and the original return. "If something goes wrong today, you can always come back to a checkpoint."
+  - Show how to start a new conversation (and why you'd want to — fresh context, no baggage)
+- Key messages:
+  - "Agent mode edits your files directly. You type what you want; it makes the changes."
+  - "Review before you accept. Always read the diff before clicking Keep."
+  - "Checkpoints are your safety net. Every message creates one."
+
+**Instructor note:** Don't rush the orientation. This is the foundation for everything. Every participant must have successfully sent a prompt, seen a change, clicked Keep, and restored a checkpoint before Session 1 begins. If someone can't find the chat panel or doesn't understand Keep vs. Undo, they'll struggle all day.
 
 ---
 
-### Session 1: Ideation — 45 min (9:30–10:15)
+### Session 1: First Feature — 60 min (9:45–10:45)
 
-**Goal:** Design the recipe app collaboratively with AI.
+**Goal:** Build the stakeholder list page. First real experience building with AI.
 
-**Principles taught:** AI as Collaborator, Prompting as a Skill.
+**Principles taught:** AI as Collaborator, Work in Small Steps.
 
 **What happens:**
-- Participants open Copilot Chat and design their app through conversation. No coding yet — just thinking together with the AI.
-- Suggested prompts to try (but not mandated — they should experiment):
-  - "I want to build a personal recipe book web app. What features should it have?"
-  - "Which of these should I build first and why?"
-  - "Can you describe a simple data model for recipes?"
-- After 20 minutes, group discussion: compare what different people got. Different prompts → different designs. Same prompt → sometimes different designs.
-- Each participant picks 3-4 features to build during the day and writes them down (on paper or in a notes file).
+- The guide opens with a short "How a web app works" orientation — three concepts (data, routes, templates) in plain language. This gives non-technical participants a mental model before they start building.
+- Pre-generated sample data already exists in `app/data/stakeholders.json`. Participants open this file and read through it to understand the data shape before writing any code.
+- The guide then walks participants through building the page. Step by step, one piece at a time:
+  1. **Look at the data:** Participants open `app/data/stakeholders.json` and read the pre-generated sample data. This orients them to the data structure before building anything.
+  2. **Create a route:** Ask Copilot to make the homepage show stakeholders instead of the welcome page. The guide provides an example prompt in plain language (no jargon like "FastAPI" or "Jinja2") with a note that it's fine to copy it directly. It explains what a "route" is in one sentence. Review the changes, then Keep.
+  3. **Create a template:** Ask Copilot to create the HTML page. The guide provides an example prompt focused on what they want to *see* (heading, table/cards, stakeholder fields) rather than technical details. Copilot will create the file automatically and use the existing styling. Review, then Keep.
+  4. **Run and see:** The app should reload automatically. Open the browser. If there's an error, copy it into Copilot Chat.
+  5. **Read the code:** Spend 5 minutes reading what Copilot generated. Pick one thing you don't understand and ask Copilot to explain it.
+- The guide provides example prompts for the route and template steps that are deliberately less technical than before — they describe what the participant *wants* rather than how to implement it. A note says "you can copy this directly or adapt it" — giving non-technical participants explicit permission to copy.
+- After each step, participants review the inline diff before clicking Keep. This builds the review habit early.
+- Support staff focus on people who are stuck at any step. Common issues: template not found errors, the app not reloading, accidentally clicking Keep before reviewing.
 
-**Instructor moment:** "Notice how the AI gave you different answers based on how you asked? That's not randomness — it's responding to context and specificity. The more precise you are about what you want, the more useful the response. But also — the AI surfaced ideas you might not have thought of. That's the collaboration."
+**Instructor moment (at the end):** "You just built a working web page with AI as your partner. Notice how we did it: one piece at a time. First the data, then the route, then the page. You didn't ask for everything at once — you built one piece, checked it, then moved on. That's *working in small steps*. Also notice — you spent more time reading what the AI gave you than writing prompts. That ratio is normal. The real skill is evaluation."
 
-**Lesson learned:** The AI is a useful thinking partner, but different inputs produce different outputs. You shape the conversation.
+**Lesson learned:** One step at a time. Build one piece, review it, then build the next. The AI writes the code; you steer and verify.
 
 ---
 
-### Session 2: First Feature — 60 min (10:15–11:15)
+*Break — 15 min (10:45–11:00)*
 
-**Goal:** Build the recipe list page using the plan-execute-iterate cycle.
+---
 
-**Principles taught:** Plan → Execute → Iterate, Incremental over Ambitious, Reading > Writing.
+### Session 2: Adding Features + Dealing with Failure — 75 min (11:00–12:15)
+
+**Goal:** Build a second feature with less scaffolding, then experience and recover from AI failure.
+
+**Principles taught:** Context Shapes Output, Verify, Don't Trust.
+
+**Part A — Add stakeholder form (40 min):**
+- Build a form to add new stakeholders. This is more complex: a second route, form handling, writing to the JSON data file.
+- The guide provides a graduated scaffold: an example prompt for the first piece (displaying the form) but no example prompt for the second piece (handling submission). This lets participants practice writing their own prompts while still having a safety net for the first unfamiliar task.
+- The guide tells participants *what* to build (a form with fields for name, organization, role, category) and the incremental approach (display the form first, then handle submission).
+- Key teaching moment: when things don't work, describe the *specific* problem. "The form submits but the stakeholder doesn't appear in the list" beats "it's not working."
+
+**Part B — The failure experiment (35 min):**
+- The guide presents two prompts. Participants try both in Agent mode:
+
+  **Prompt A (vague):**
+  > "Make my stakeholder app better and more professional. Add all the features it needs."
+
+  **Prompt B (specific):**
+  > "Add a navigation bar to base.html with links to the stakeholder list and the add stakeholder page. Use the existing Pico CSS classes."
+
+- **Prompt A flow:** Participants open a new conversation and submit the vague prompt. Agent mode runs — it will edit multiple files, possibly add routes, restructure code, maybe run terminal commands. The chaos is visible and real: diffs everywhere, files they didn't ask to change, maybe the app breaks. Participants observe the damage but **do not click Keep**.
+- **Revert:** In the Chat view, participants hover over the Prompt A message and click **Restore Checkpoint**. All changes revert. Their app is back to its working state.
+- **Prompt B flow:** Participants open another new conversation and submit the specific prompt. Agent mode runs — it edits one file, adds a clean nav bar. Participants review the diff, verify it in the browser, then click Keep.
+- **Group discussion:** "What did the AI do differently? Why? What made Prompt B work better? What would have happened if you had clicked Keep on Prompt A?"
+- Instructor names the failure modes they just saw: hallucination, over-engineering, drift. These aren't bugs — they're predictable patterns. The checkpoint saved them.
+
+**Instructor moment:** "What you just saw is why *context shapes output* and *verify, don't trust* matter. The vague prompt gave the AI no constraints, so it invented its own. The specific prompt told it exactly what you wanted — and it delivered. And notice: you didn't click Keep on the bad result. You reviewed, saw the mess, and used a checkpoint to go back. That's the workflow — review first, accept only what you understand."
+
+**Lesson learned:** AI fails predictably. Specific prompts with clear context produce better results. Always review before accepting. When things go wrong, use a checkpoint to revert and start fresh with a better prompt.
+
+---
+
+*Lunch — 60 min (12:15–13:15)*
+
+---
+
+### Session 3: Context and Configuration — 60 min (13:15–14:15)
+
+**Goal:** Teach persistent context. Build another feature with less guidance and better results.
+
+**Principles taught:** Context Shapes Output (deepened).
 
 **What happens:**
-- The guide explicitly walks through the cycle:
-  1. **Plan:** "We need a route that returns a list of recipes, and a template that displays them."
-  2. **Execute:** Ask Copilot to generate the route. Review it. Then ask for the template. Review it. One piece at a time.
-  3. **Iterate:** Run the app. See what happens. If something's broken, describe the problem to Copilot and ask for a fix.
-- Recipes are hardcoded as a Python list of dicts — no database. Keep it simple.
-- The guide intentionally does NOT give exact prompts. Participants must formulate their own. This is where the support staff help people who get stuck.
-- After getting it working, the guide prompts: "Your app works. Now spend 5 minutes *reading* the code the AI generated. Can you follow what it does? Pick one thing you don't fully understand and ask Copilot to explain it."
 
-**Instructor moment:** "Who got it working on the first try? Who had to ask Copilot to fix something? That iteration isn't failure — it IS the process. Also notice: you spent more time reading and evaluating what the AI gave you than writing prompts. That ratio is normal and stays that way."
+**Part A — Create a copilot instructions file (20 min):**
+- The guide introduces `.github/copilot-instructions.md`: "Until now, you've been telling the AI what your project is every time. What if it just *knew*?"
+- Participants ask Copilot to create the file: "Create a file at `.github/copilot-instructions.md` that describes this project — what it does, what technologies it uses, and how data is stored. Keep it short and practical." This is more consistent with the workshop's own principle (AI as Collaborator) and avoids the awkwardness of manually creating dotfile folders.
+- Participants review and edit the generated file — adding rules, removing things that don't seem right, making it theirs. Then Keep.
+- The guide explains: Copilot reads this file automatically for every conversation. It's persistent context.
 
-**Lesson learned:** Work in small steps, not big leaps. The real skill is in evaluating AI output, not producing prompts.
+**Part B — Build a new feature (40 min):**
+- With copilot instructions in place, participants add a new feature. The guide offers options but doesn't dictate:
+  - Stakeholder detail page (click a name → see full info)
+  - Search/filter stakeholders by name or organization
+  - Delete a stakeholder
+  - Group stakeholders by category
+- This is the first time participants choose what to build. The guide gives general advice ("plan before you prompt, work incrementally") but no step-by-step instructions.
+- Participants should notice: Copilot now respects the project conventions without being reminded. It follows the existing code patterns. The results are better because the context is richer.
 
----
+**Instructor moment:** "Compare this to Session 1. Less explaining, better results. That's the compound effect of context — your instructions file, your existing code patterns, your prompt specificity. All of it adds up."
 
-*Break — 15 min (11:15–11:30)*
-
----
-
-### Session 3: Adding Features + Dealing with Problems — 75 min (11:30–12:45)
-
-**Goal:** Build a more complex feature, then experience and recover from failure.
-
-**Principles taught:** Prompting as a Skill (reinforced), Common Failure Modes, Context is Everything.
-
-**Part A — Add recipe form (40 min):**
-- Build a form to add new recipes. This introduces: a second route, HTML form handling, data mutation (appending to the list).
-- More complex than Session 2 — participants need to give Copilot more context about what exists and what they want.
-- Incremental approach reinforced: first the route, then the template, then wire them together. Not all at once.
-
-**Part B — Intentional failure exercise (35 min):**
-- The guide gives everyone a deliberately bad prompt to use: something like *"Make the app better and more professional."*
-- They submit it and observe what happens: the AI may restructure code they don't understand, add features they didn't ask for, introduce libraries they've never heard of, or hallucinate APIs.
-- Then the guide walks them through recovery:
-  1. First, try to *correct* the AI in the same conversation (3 minutes). See if you can steer it back.
-  2. Then, undo everything, start a fresh chat, and redo it with a specific prompt. Compare the effort.
-- Group discussion: "What did the AI do? Why? What was the prompt missing?"
-
-**Instructor moment:** "What you just saw has names. When the AI invents things that don't exist — that's *hallucination*. When it adds complexity you didn't ask for — that's *over-engineering*. When it changes things based on the messy earlier conversation — that's *stale context*. These aren't bugs. They're predictable patterns. Now that you can name them, you'll spot them faster. Also: the AI only sees what's in its current window — your conversation, your open files. It doesn't know your whole project. That's why specific prompts matter."
-
-**Lesson learned:** AI fails in predictable ways. Learning to recognize these patterns is more valuable than avoiding them. When the conversation goes off track, sometimes a fresh start is faster than a fix.
+**Lesson learned:** Persistent context reduces friction. Small configuration investments yield outsized returns.
 
 ---
 
-*Lunch — 45 min (12:45–13:30)*
+*Break — 15 min (14:15–14:30)*
 
 ---
 
-### Session 4: Structure and Patterns — 60 min (13:30–14:30)
+### Session 4: Free Build — 105 min (14:30–16:15)
 
-**Goal:** Refactor into clean structure, then build within that structure.
-
-**Principles taught:** Decomposition, Existing Code & Patterns.
-
-**What happens:**
-- By now, most participants have everything in one or two files. The guide introduces the idea of structure:
-  - Routes in one file, templates in a folder, data/models separate.
-- They ask Copilot to help split things up. This is a refactoring exercise — the app should work the same before and after.
-- After restructuring, they add a new feature: recipe categories or a detail page. The point is to see how building *within* an existing structure is faster and more consistent than building from scratch.
-- The guide prompts them to notice: "Did the AI follow the patterns you set up? Are the new files consistent with the existing ones?"
-
-**Instructor moment:** "The AI just followed the conventions that exist in your project. It saw how you organized templates and made the new one the same way. It saw your route style and matched it. This is why structure matters — not just for you, but for your AI collaborator. Good structure is a force multiplier."
-
-**Lesson learned:** Investing in structure pays off immediately — the AI amplifies whatever patterns exist, good or bad.
-
----
-
-### Session 5: Leveling Up — 45 min (14:30–15:15)
-
-**Goal:** Introduce persistent project context through copilot instructions.
-
-**Principles taught:** Context is Everything (deepened).
-
-**What happens:**
-- Introduce `.github/copilot-instructions.md`. Explain: "Until now, you've been telling the AI what your project is every time. What if it just *knew*?"
-- Participants create a simple instructions file:
-  ```
-  This is a Python FastAPI web application using Jinja2 templates and Pico CSS for styling.
-  Keep code simple and readable.
-  Use hardcoded data — no database.
-  ```
-- Then they add a new small feature (e.g., a "delete recipe" button, or improved styling) and see how the AI's output changes — it should now respect the project conventions without being reminded.
-- Optional stretch: create a `.github/prompts/add-page.prompt.md` that encapsulates the pattern for adding a new page (route + template). Try using it.
-
-**Instructor moment:** "Remember Session 3, when the AI went off the rails partly because it didn't know what kind of project this was? You just fixed that permanently. This file gives the AI persistent context — it reads it every time. Same principle: context shapes output. More context, better output."
-
-**Lesson learned:** You can shape AI behavior by giving it persistent context about your project. Small investments in configuration yield large returns.
-
----
-
-*Break — 15 min (15:15–15:30)*
-
----
-
-### Session 6: Free Build — 60 min (15:30–16:30)
-
-**Goal:** Independent application of all principles.
+**Goal:** Independent application of all principles. Extended building time.
 
 **Principles taught:** All — applied without guidance.
 
 **What happens:**
-- Open-ended building time. Participants choose what to add to their recipe app.
+- Open-ended building time. Participants choose what to add to their stakeholder directory.
+- They can work solo or in pairs — their choice. Encourage pairing if someone is less confident.
 - Suggestions for those who need direction:
-  - Search/filter recipes by name or ingredient
-  - Recipe detail page with nicely formatted ingredients and instructions
-  - Favorite/bookmark recipes
-  - Simple persistence (save recipes to a JSON file so they survive restart)
-  - Recipe categories with navigation
-- Support staff circulate but let people work independently. Intervene only when someone is stuck for more than 5 minutes.
-- Encourage participants to apply what they learned: plan before prompting, work incrementally, read the output critically, recognize failure modes.
+  - Search/filter by name, organization, or category
+  - Edit existing stakeholders
+  - Stakeholder notes or interaction history
+  - Export stakeholder list (as a simple text/CSV page)
+  - Tags or labels for stakeholders
+  - Sort by name, organization, or date added
+  - Visual improvements — better cards, category badges
+- Support staff circulate but let people work independently. Intervene if someone is stuck for more than 5 minutes.
+- At the 60-minute mark, give a time check: "45 minutes left. If you want to demo, start wrapping up your current feature."
 
-**Lesson learned (self-discovered):** Everything from the day, applied independently. Participants feel the difference between their Session 2 experience and now.
+**Instructor note:** This session is long on purpose. The afternoon is where participants internalize the principles through repetition. Don't cut it short. The difference between their Session 1 prompts and their Session 4 prompts is the most visible evidence of learning.
+
+**Lesson learned (self-discovered):** All principles, applied independently. Participants feel the difference between their early experience and now.
 
 ---
 
-### Closing — 30 min (16:30–17:00)
+### Closing — 30 min (16:15–16:45)
 
 **Goal:** Reflect, consolidate, celebrate.
 
 **What happens:**
-- Volunteers show what they built (quick screen shares, 2 minutes each, max 4-5 demos)
+- Show-and-tell: volunteers show what they built (quick screen shares, 2 minutes each, max 4-5 demos)
 - Group reflection (guided questions):
   - "What surprised you today?"
   - "What was harder than expected? Easier?"
-  - "What's one thing you'll do differently tomorrow when working with AI?"
-- Instructor summarizes the 9 principles using real examples from the day
+  - "How would you describe working with AI to a colleague who wasn't here?"
+- Instructor revisits the 4 principles using real examples from the day:
+  - "In the opening, you sent your first prompt and watched AI edit your code — *AI as Collaborator*"
+  - "In Session 1, you built one piece at a time, reviewed, then moved on — *Work in Small Steps*"
+  - "The vague prompt failed; the specific prompt worked — *Context Shapes Output*"
+  - "You read the code, spotted problems, used checkpoints to go back when needed — *Verify, Don't Trust*"
 - Hand out the principles reference card
-- Mention: "There's more to learn — custom agents, advanced prompting, working with larger codebases. Today was the foundation."
-
-**Lesson learned:** Explicit articulation of what was learned, cemented through group reflection.
+- Close: "You built a working web application today using AI as your partner. The principles you practiced apply to any tool, any project, any domain."
 
 ---
 
@@ -213,9 +222,27 @@
 
 | Session | Principles | Lesson Learned |
 |---|---|---|
-| 1. Ideation | AI as Collaborator, Prompting as a Skill | The AI is a useful thinking partner, but you shape the conversation |
-| 2. First Feature | Plan → Execute → Iterate, Incremental over Ambitious, Reading > Writing | Work in small steps; the real skill is evaluating output |
-| 3. Features + Problems | Prompting as a Skill, Common Failure Modes, Context is Everything | AI fails predictably; naming the patterns helps you recover faster |
-| 4. Structure | Decomposition, Existing Code & Patterns | Good structure is a force multiplier for AI collaboration |
-| 5. Leveling Up | Context is Everything | Persistent context configuration yields outsized returns |
-| 6. Free Build | All | Self-directed application and consolidation |
+| Opening | AI as Collaborator (first taste) | You type what you want; AI makes changes. Review before accepting; checkpoints are your safety net. |
+| 1. First Feature | AI as Collaborator, Work in Small Steps | One step at a time. Build one piece, review it, then build the next. |
+| 2. Features + Failure | Context Shapes Output, Verify, Don't Trust | AI fails predictably. Specific context produces better results. Review before accepting; use checkpoints to revert and start fresh. |
+| 3. Context & Config | Context Shapes Output (deepened) | Persistent context reduces friction. Small configuration investments yield outsized returns. |
+| 4. Free Build | All | Self-directed application and consolidation. |
+
+## Support Staff Guide
+
+**Role:** Help participants who are stuck. Don't solve for them — guide them toward asking Copilot the right question.
+
+**Common issues by session:**
+
+| Session | Likely problems | How to help |
+|---|---|---|
+| Opening | Setup failures, Copilot not signed in, first prompt doesn't produce a visible change | Walk through prep guide steps individually. If the first prompt doesn't edit the welcome page, check that Agent mode is selected and the app is running. |
+| 1 | JSON file not loading, template not found, app won't start | Check file paths, check the error message, help them ask Copilot to fix it |
+| 2A | Form doesn't submit, data doesn't save to JSON, POST route not working | Help them describe the problem specifically to Copilot — not "it's broken" but "the form submits but nothing appears" |
+| 2B | Accidentally clicked Keep on Prompt A, or can't find Restore Checkpoint | Help them find the checkpoint: hover over the message in the Chat view → Restore Checkpoint. If they already clicked Keep, hand them the Session 2 backup folder. |
+| 3 | Copilot instructions not being picked up, Copilot creates the file in the wrong location | Check file path (must be `.github/copilot-instructions.md`), restart the chat |
+| 4 | Ambitious scope, stuck on complex features | Help them decompose. "What's the smallest version of this that would work?" |
+
+**When to intervene:** If someone has been stuck for more than 5 minutes without making progress. During Session 4, give more space — 10 minutes before stepping in.
+
+**Backup folders:** Have pre-built app states ready for after Session 1 and after Session 2. If someone's app is irreparably broken, hand them the backup and let them continue from a clean state. Don't make a big deal of it — "Here's a fresh copy, you're all caught up."

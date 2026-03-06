@@ -1,7 +1,7 @@
 [project]
 name = "ai-coding-workshop"
 version = "0.1.0"
-description = "Workshop: Building with AI — Personal Recipe Book"
+description = "Workshop: Building with AI — Stakeholder Directory"
 requires-python = ">=3.12"
 dependencies = [
     "fastapi[standard]>=0.115.0",
